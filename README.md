@@ -6,6 +6,8 @@
 
 `meow-vision` 提供两个工具：
 <img width="1920" height="868" alt="image" src="https://github.com/user-attachments/assets/0d4b98bb-aa8f-42cc-ab12-eb5fe2c770f3" />
+<img width="1920" height="869" alt="image_17871299533278" src="https://github.com/user-attachments/assets/11f14eb7-cb89-4c0f-bdad-20576522f709" />
+
 
 1. **`meow_vision`** — 当你正在用的模型**不能直接看图**时（非多模态会话），调用它，由你预先在设置里指定的视觉模型识别图片并返回文字描述。
 2. **`meow_preview`** — 渲染一个页面（本地 Vue demo、URL、HTML 文件）并把截图**作为图片**返回给当前模型，让多模态模型能"看见"组件真实渲染效果（样式/边距/布局），方便迭代 UI 组件写法。
