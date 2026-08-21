@@ -1,0 +1,19 @@
+# meow-vision bundle layer.
+#
+# 组合层：只插一行 meow-vision（与 dsh-meow-skill / meow-file-view 同款形态）。
+# 插件 apply() 会：
+#   1. 读插件根目录的 vision.json（视觉模型 { provider, model }，可在设置弹窗「视觉」tab 里配置）；
+#   2. 注册 Web 路由（ctx.webServer）：
+#      - GET  /api/meow-vision/config      读当前视觉模型配置
+#      - POST /api/meow-vision/config      写视觉模型配置（→ vision.json）
+#      - GET  /api/meow-vision/candidates  视觉模型候选列表（从 dsh 已配置模型里过滤多模态）
+#   3. 注册 meow_vision 工具（ctx.tools）：非多模态模型用它看图；
+#   4. 注入 systemPrompt hint：何时该用 meow_vision。
+#   browser 半在设置弹窗加「视觉」tab（settings.section slot）。
+#   inject 含 'webServer'，强依赖 web profile 形态。
+- insert:
+    - id: meow-vision
+      name: meow-vision
+      config: {}
+        # 配置说明：暂无（vision.json 在设置 tab 里配置）
+        # 注意：config 显式给 {} 而非空（空会解析成 null，插件 apply 会崩）
