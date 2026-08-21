@@ -1,7 +1,7 @@
 {
   "name": "meow-vision",
   "version": "0.1.0",
-  "description": "dsh 插件：给文本模型补一双眼睛 —— 设置弹窗选视觉模型 + meow_vision 工具（非多模态会话也能看图）",
+  "description": "dsh 插件：给文本模型补一双眼睛 + 给多模态模型补一对观察 UI 渲染的眼睛 —— 设置弹窗选视觉模型 + meow_vision 工具 + meow_preview 组件截图工具",
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -16,9 +16,48 @@
     "./package.json": "./package.json"
   },
   "files": [
-    "lib",
-    "cordis.patch.yml"
+    "lib/index.js",
+    "lib/index.d.ts",
+    "lib/client.js",
+    "lib/config.js",
+    "lib/config.d.ts",
+    "lib/candidates.js",
+    "lib/candidates.d.ts",
+    "lib/vision.js",
+    "lib/vision.d.ts",
+    "lib/preview.js",
+    "lib/preview.d.ts",
+    "lib/preview-config.js",
+    "lib/preview-config.d.ts",
+    "lib/web/routes.js",
+    "lib/web/routes.d.ts",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
   ],
+  "keywords": [
+    "dsh-plugin",
+    "dsh",
+    "deepseek-harness",
+    "deepseek",
+    "vision",
+    "image-recognition",
+    "multimodal",
+    "ui-preview",
+    "component-screenshot",
+    "vue",
+    "agent-tools"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/meimiaoji-creator/meow-vision#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/meimiaoji-creator/meow-vision.git"
+  },
+  "bugs": {
+    "url": "https://github.com/meimiaoji-creator/meow-vision/issues"
+  },
+  "author": "meimiaoji-creator",
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"
