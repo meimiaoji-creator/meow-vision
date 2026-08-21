@@ -2,6 +2,8 @@
 
 > **dsh-plugin** for DeepSeek Harness（DSH）：给文本模型补一双眼睛，给多模态模型补一对"看 UI 渲染"的眼睛。
 
+[![Listed on dsh-plugin.org](https://dsh-plugin.org/badges/listed.svg)](https://dsh-plugin.org/plugins/meimiaoji-creator/meow-vision)
+
 `meow-vision` 提供两个工具：
 <img width="1920" height="868" alt="image" src="https://github.com/user-attachments/assets/0d4b98bb-aa8f-42cc-ab12-eb5fe2c770f3" />
 
