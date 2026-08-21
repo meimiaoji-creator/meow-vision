@@ -154,12 +154,59 @@ path: /Users/you/work/my-lib/.preview/shots/button-basic.png
 
 ---
 
-## 依赖与 peer
+## 权限与运行时行为
 
-- `peerDependencies: @deepseek-ai/cordis ^0.1.0`
-- `client.inject: @deepseek-ai/dsh-client-runtime, @deepseek-ai/dsh-client-ui-settings`
-- `client.platform: web`（强依赖 web profile 形态）
-- Node 半需要的 inject：`webServer / tools / systemPrompt / llm / attachments / fs`
+透明地列出来本插件安装后**会做什么 / 不会做什么**，方便你评估是否安装。
+
+### 会做
+
+- **写文件**
+  - `<插件根>/vision.json`：保存你在设置 tab 选中的视觉模型 `{ provider, model }`
+  - `<你配置的 .preview 目录>/shots/*.png`：`meow_preview` 工具生成的截图产物
+  - `<你配置的 .preview 目录>/src/demos/<name>.vue`：模型按 demo 规范写的 Vue 文件
+- **启动 1 个常驻 dev server**：仅当 `meow_preview` 被首次调用时拉起你配置的团队 UI 库 dev server（默认 `localhost:4173`），插件卸载时自动 kill
+- **注册 Web 路由**（仅同源，DSH 进程内）
+  - `GET  /api/meow-vision/config`     — 读视觉模型配置
+  - `POST /api/meow-vision/config`     — 写视觉模型配置
+  - `GET  /api/meow-vision/candidates` — 候选视觉模型列表
+- **调用 DSH 已注入的服务**
+  - `ctx.tools.register`：注册 `meow_vision` / `meow_preview` 两个工具
+  - `ctx.systemPrompt.section`：注入两段 hint（order=150）
+  - `ctx.webServer.use`：注册上面 3 条路由
+  - `ctx.llm.resolveModelInfo`：探测当前主模型多模态能力（决定走 `meow_vision` 还是提示用 `read_image`）
+  - `ctx.llm.stream`：复用 DSH 已配的视觉模型流式调用，**不发起任何第三方 API 请求**，不发起子 agent
+  - `ctx.fs` / `ctx.attachments`：读写本地文件、把截图以 attachment 形式喂给当前模型
+- **设置弹窗注入**：在 DSH 设置弹窗加一个名为 `meow-vision` 的 section tab（视觉模型 + 预览配置）
+
+### 不会做
+
+- ❌ **不读聊天记录 / 会话历史 / 用户上传的其他附件**
+- ❌ **不读其他插件的配置或状态**
+- ❌ **不调用任何 DSH 之外的第三方 API**（视觉模型完全复用你 DSH 已配的 provider/model）
+- ❌ **不修改 DSH 源码**，纯 Cordis 插件
+- ❌ **不持久化任何用户隐私**：vision.json 只存你选的 `{provider, model}`，不含 API key
+- ❌ **不向外发请求**：无 telemetry、无 analytics、无远程上报
+
+---
+
+## 兼容性
+
+| 项目 | 要求 |
+|---|---|
+| **DSH profile** | 仅 `web`（依赖 `webServer` 服务 + settings tab 注入） |
+| **DSH runtime** | `@deepseek-ai/cordis ^0.1.0`（peerDependencies） |
+| **DSH client 注入** | `@deepseek-ai/dsh-client-runtime`、`@deepseek-ai/dsh-client-ui-settings` |
+| **Node 半 inject** | `webServer / tools / systemPrompt / llm / attachments / fs` |
+| **运行平台** | Node 18+，ESM only（`"type": "module"`） |
+| **视觉模型** | DSH 已配置的多模态模型中任选一个（用户自选；候选列表自动过滤 `inputModalities` 含 `image` 的） |
+| **meow_preview dev server** | 你团队的 Vue 组件库 demo 项目（默认端口 4173，需支持 `demos/<name>.vue` 路由） |
+| **浏览器** | 现代浏览器（支持同源 fetch + React 18 hooks）；无 IE / 老 Safari 兼容承诺 |
+
+### 已知不兼容
+
+- ❌ TUI / CLI profile（依赖 web profile）
+- � 旧版 DSH rc 之前的 cordis API（需要 `^0.1.0`）
+- ❌ `meow_preview` 对非 Vue 库的 demo（如 React 组件库）需要你自行改写 dev server 入口
 
 ---
 
